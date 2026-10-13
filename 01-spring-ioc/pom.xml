@@ -10,6 +10,6 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>spring-ioc</artifactId>
+    <artifactId>01-spring-ioc</artifactId>
 
 </project>
