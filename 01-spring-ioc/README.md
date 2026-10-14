@@ -5,7 +5,7 @@
 | 顺序 | 子包                        | 练习内容                                           | 计划测试                                   |
 | ---- | --------------------------- | -------------------------------------------------- | ------------------------------------------ |
 | 01   | `lesson01.basic`            | 手动组装与容器组装、Bean 获取                      | `BasicIocTest`：查询结果、Bean 获取        |
-| 02   | `lesson02.xmlconfig`        | 构造器、Setter、普通值、工厂方法                   | `XmlConfigTest`：注入结果、类型转换        |
+| 02   | `lesson02.xmlconfig`        | 构造器、Setter、工厂方法、数据库属性配置           | `XmlConfigTest`：注入结果、属性读取与类型转换 |
 | 03   | `lesson03.annotationconfig` | 组件标记、扫描、构造器注入                         | `AnnotationConfigTest`：组件注册、缺失依赖 |
 | 04   | `lesson04.javaconfig`       | `@Bean`、参数注入、`proxyBeanMethods`              | `JavaConfigTest`：实例身份比较             |
 | 05   | `lesson05.autowiring`       | 多候选 Bean、`@Primary`、`@Qualifier`、`@Resource` | `AutowiringTest`：歧义与候选选择           |
