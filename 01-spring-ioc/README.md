@@ -2,16 +2,16 @@
 
 ## 学习顺序
 
-| 顺序 | 子包                        | 练习内容                                           | 计划测试                                   |
-| ---- | --------------------------- | -------------------------------------------------- | ------------------------------------------ |
-| 01   | `lesson01.basic`            | 手动组装与容器组装、Bean 获取                      | `BasicIocTest`：查询结果、Bean 获取        |
+| 顺序 | 子包                        | 练习内容                                           | 计划测试                                      |
+| ---- | --------------------------- | -------------------------------------------------- | --------------------------------------------- |
+| 01   | `lesson01.basic`            | 手动组装与容器组装、Bean 获取                      | `BasicIocTest`：查询结果、Bean 获取           |
 | 02   | `lesson02.xmlconfig`        | 构造器、Setter、工厂方法、数据库属性配置           | `XmlConfigTest`：注入结果、属性读取与类型转换 |
-| 03   | `lesson03.annotationconfig` | 组件标记、扫描、构造器注入                         | `AnnotationConfigTest`：组件注册、缺失依赖 |
-| 04   | `lesson04.javaconfig`       | `@Bean`、参数注入、`proxyBeanMethods`              | `JavaConfigTest`：实例身份比较             |
-| 05   | `lesson05.autowiring`       | 多候选 Bean、`@Primary`、`@Qualifier`、`@Resource` | `AutowiringTest`：歧义与候选选择           |
-| 06   | `lesson06.scope`            | 单例、原型、单例依赖原型                           | `ScopeTest`：实例复用与按需获取            |
-| 07   | `lesson07.lifecycle`        | 初始化、销毁、容器关闭                             | `LifecycleTest`：回调顺序与销毁范围        |
-| 08   | `lesson08.extension`        | Bean 定义与实例的后处理器                          | `ExtensionTest`：定义修改与实例处理        |
+| 03   | `lesson03.annotationconfig` | 组件标记、扫描、构造器注入                         | `AnnotationConfigTest`：组件注册、缺失依赖    |
+| 04   | `lesson04.javaconfig`       | `@Bean`、参数注入、`proxyBeanMethods`              | `JavaConfigTest`：实例身份比较                |
+| 05   | `lesson05.autowiring`       | 多候选 Bean、`@Primary`、`@Qualifier`、`@Resource` | `AutowiringTest`：歧义与候选选择              |
+| 06   | `lesson06.scope`            | 单例、原型、单例依赖原型                           | `ScopeTest`：实例复用与按需获取               |
+| 07   | `lesson07.lifecycle`        | 初始化、销毁、容器关闭                             | `LifecycleTest`：回调顺序与销毁范围           |
+| 08   | `lesson08.extension`        | Bean 定义与实例的后处理器                          | `ExtensionTest`：定义修改与实例处理           |
 
 ## 目录
 
@@ -47,7 +47,3 @@ mvn test
 ```bash
 mvn -pl 01-spring-ioc -Dtest=BasicIocTest test
 ```
-
-`BasicIocTest` 验证手动组装、容器组装、三种 Bean 获取方式、默认单例复用和不存在的 Bean 名称。容器测试加载主资源中的真实 XML，并在每次测试结束时关闭容器。
-
-`ManualApp` 和 `SpringApp` 保留最小查询演示；查询结果和实例身份由测试断言验证。手动组装的测试属于单元测试，加载 Spring 容器的测试属于集成测试，统一通过 `mvn test` 运行。
