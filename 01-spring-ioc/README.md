@@ -71,3 +71,25 @@ mvn -pl 01-spring-ioc -Dtest=JavaConfigTest test
 ```
 
 参考 Spring 官方文档：[@Bean 与 @Configuration](https://docs.spring.io/spring-framework/reference/core/beans/java/basic-concepts.html)、[@Bean 方法参数与命名](https://docs.spring.io/spring-framework/reference/core/beans/java/bean-annotation.html)。
+
+## 多候选 Bean：lesson05.autowiring
+
+`dao.UserDao` 接口有两个实现类，放在 `dao.impl` 下：`DatabaseUserDao`（模拟数据库）和 `MemoryUserDao`（模拟内存），分别注册为 `databaseUserDao`、`memoryUserDao`。Service 依赖接口，由容器选择具体实现，运行时无需外部服务。
+
+| 示例 | 注入规则 | 查询结果 |
+| ---- | -------- | -------- |
+| `PrimaryUserService` | 构造器按类型注入，优先选择标有 `@Primary` 的 `databaseUserDao` | `Ada (database)` |
+| `QualifierUserService` | 构造器参数使用 `@Qualifier("memoryUserDao")` 筛选候选 | `Ada (memory)` |
+| `ResourceUserService` | Setter 使用 `@Resource(name = "memoryUserDao")` 按名称注入 | `Ada (memory)` |
+
+- `@Primary` 标在候选 Bean 上，提供默认选择；它不会删除其他候选。
+- `@Qualifier` 标在注入点上，在类型匹配的候选中继续筛选；可使用 Bean 名或限定标签。一般业务必需依赖优先用构造器注入，存在多个候选时搭配 `@Qualifier`。
+- `@Resource` 使用 `jakarta.annotation.Resource`，支持字段和单参数 Setter，不支持构造器；显式名称不存在时直接报错。未指定名称时，先找与字段名或 Setter 属性名相同的 Bean，默认名称不存在时再按类型解析。
+
+`AutowiringTest` 保留三个核心示例，分别验证 `@Primary`、`@Qualifier` 和 `@Resource` 的注入结果，每个示例只用一个断言。
+
+```bash
+mvn -pl 01-spring-ioc -Dtest=AutowiringTest test
+```
+
+参考 Spring 官方文档：[@Primary](https://docs.spring.io/spring-framework/reference/core/beans/annotation-config/autowired-primary.html)、[@Qualifier](https://docs.spring.io/spring-framework/reference/core/beans/annotation-config/autowired-qualifiers.html)、[@Resource](https://docs.spring.io/spring-framework/reference/core/beans/annotation-config/resource.html)。
