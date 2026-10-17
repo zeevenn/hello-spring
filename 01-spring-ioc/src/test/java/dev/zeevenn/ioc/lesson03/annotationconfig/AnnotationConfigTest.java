@@ -11,6 +11,9 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+/**
+ * 注解 + Java 配置类
+ */
 class AnnotationConfigTest {
 
     private static final String BASE_PACKAGE = "dev.zeevenn.ioc.lesson03.annotationconfig";
@@ -29,6 +32,26 @@ class AnnotationConfigTest {
     void singleConstructorInjectionReturnsName() {
         try (var context = new AnnotationConfigApplicationContext(BASE_PACKAGE)) {
             UserService service = context.getBean(UserService.class);
+
+            assertEquals("Ada", service.findName());
+        }
+    }
+
+    @Test
+    @DisplayName("字段注入：通过 @Autowired 为字段注入 DAO 并查询")
+    void fieldInjectionReturnsName() {
+        try (var context = new AnnotationConfigApplicationContext(AppConfig.class)) {
+            FieldUserService service = context.getBean(FieldUserService.class);
+
+            assertEquals("Ada", service.findName());
+        }
+    }
+
+    @Test
+    @DisplayName("Setter 注入：通过 @Autowired 调用 Setter 注入 DAO 并查询")
+    void setterInjectionReturnsName() {
+        try (var context = new AnnotationConfigApplicationContext(AppConfig.class)) {
+            SetterUserService service = context.getBean(SetterUserService.class);
 
             assertEquals("Ada", service.findName());
         }
