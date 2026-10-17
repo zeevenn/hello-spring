@@ -47,3 +47,27 @@ mvn test
 ```bash
 mvn -pl 01-spring-ioc -Dtest=BasicIocTest test
 ```
+
+## Java 显式配置：lesson04.javaconfig
+
+与 lesson03 的组件扫描不同，本课的 `UserDao`、`UserService` 都是普通 Java 类，由配置类中的 `@Bean` 方法显式创建和注册，无需 `@ComponentScan`。
+
+| 配置类 | 组装方式 | 服务中的 DAO 与容器中的 DAO |
+| ------ | -------- | --------------------------- |
+| `AppConfig` | `proxyBeanMethods = false`，通过 `@Bean` 方法参数注入 | 同一实例 |
+| `FullConfig` | 默认 `proxyBeanMethods = true`，直接调用另一个 `@Bean` 方法 | 同一实例 |
+| `LiteConfig` | `proxyBeanMethods = false`，直接调用另一个 `@Bean` 方法（反例） | 不同实例 |
+
+- 默认 Bean 名为 `@Bean` 方法名；也可以用 `@Bean("applicationClock")` 显式命名。本课使用 JDK 的 `Clock` 演示注册无法修改源码添加组件注解的库对象，第三方类也适用。
+- Spring 调用 `@Bean` 方法时，会从容器解析其参数，再由方法将依赖传给业务对象的构造器；方法参数无需标注 `@Autowired`。
+- `proxyBeanMethods` 控制配置类的 `@Bean` 方法调用是否经过拦截。本课先比较直接调用方法和从容器取对象的区别：在默认配置下，关闭方法代理后反复 `getBean` 仍取得容器中的同一实例。实例复用的规则留到 lesson06 再展开。
+- `LiteConfig.userDao()` 每次执行都会 `new` 一个 DAO，所以直接调用会创建额外对象。依赖改用方法参数传入即可避免这个问题，见 `AppConfig`。
+- 三个配置类分别加载；不要一起扫描或注册，否则相同 Bean 名会发生冲突。手动 `new FullConfig()` 也不会得到 Spring 增强的配置对象。
+
+从 `AppConfig` 开始，再运行 `JavaConfigTest` 的四个示例：注册与参数注入、注册库对象，以及方法代理开关的对照。通过 `assertSame` / `assertNotSame` 比较对象身份：
+
+```bash
+mvn -pl 01-spring-ioc -Dtest=JavaConfigTest test
+```
+
+参考 Spring 官方文档：[@Bean 与 @Configuration](https://docs.spring.io/spring-framework/reference/core/beans/java/basic-concepts.html)、[@Bean 方法参数与命名](https://docs.spring.io/spring-framework/reference/core/beans/java/bean-annotation.html)。
