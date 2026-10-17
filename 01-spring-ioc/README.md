@@ -93,3 +93,30 @@ mvn -pl 01-spring-ioc -Dtest=AutowiringTest test
 ```
 
 参考 Spring 官方文档：[@Primary](https://docs.spring.io/spring-framework/reference/core/beans/annotation-config/autowired-primary.html)、[@Qualifier](https://docs.spring.io/spring-framework/reference/core/beans/annotation-config/autowired-qualifiers.html)、[@Resource](https://docs.spring.io/spring-framework/reference/core/beans/annotation-config/resource.html)。
+
+## Bean 作用域：lesson06.scope
+
+作用域决定容器获取 Bean 时是否复用已有对象。本课直接用 `UserDao` 注册两个 Bean，比较 `singleton`（单例）与 `prototype`（原型）。
+
+| 示例 | 获取方式 | 结果 |
+| ---- | -------- | ---- |
+| `singletonUserDao` | 反复 `getBean` | 同一实例 |
+| `prototypeUserDao` | 反复 `getBean` | 不同实例 |
+| `UserService` | 构造器直接接收原型 DAO，反复调用 `getUserDao()` | 同一实例 |
+| `ProviderUserService.getSingletonUserDao()` | 通过 `ObjectProvider.getObject()` 获取单例 DAO | 同一实例 |
+| `ProviderUserService.getUserDao()` | 通过 `ObjectProvider.getObject()` 获取原型 DAO | 不同实例 |
+
+- **单例是默认作用域**，不写 `@Scope` 等同于 `@Scope("singleton")`。复用范围是同一个容器中的同一个 Bean 定义，不表示整个 JVM 中该类只能创建一个对象。
+- **原型用 `@Scope("prototype")` 声明**，每次向容器获取时创建新对象。`@Scope` 可以标在 `@Bean` 方法或组件类上。
+- **原型不会自动刷新已有引用**。单例服务创建时直接注入原型 DAO，服务之后一直保存那个对象。需要反复获取新对象时，注入 `ObjectProvider<UserDao>` 并调用 `getObject()`。
+- `ObjectProvider` 按目标 Bean 的作用域获取对象，本身不保证每次都是新对象；本例通过两个带 `@Qualifier` 的参数，分别注入获取单例和原型 DAO 的入口。
+
+这也解释了 lesson04 中反复 `getBean` 取得同一对象的原因：默认作用域是单例。
+
+`ScopeTest` 保留四个简单测试，最后一个用两个身份比较断言，对照 `ObjectProvider` 获取单例和原型的结果。初始化和销毁回调留到 lesson07，Web 请求等作用域留到 Web 相关课程。
+
+```bash
+mvn -pl 01-spring-ioc -Dtest=ScopeTest test
+```
+
+参考 Spring 官方文档：[Bean 作用域](https://docs.spring.io/spring-framework/reference/core/beans/factory-scopes.html)、[ObjectProvider](https://docs.spring.io/spring-framework/docs/7.0.9/javadoc-api/org/springframework/beans/factory/ObjectProvider.html)。
