@@ -14,8 +14,9 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 class JavaConfigTest {
 
     @Test
-    @DisplayName("@Bean：显式注册对象，通过方法参数注入依赖")
-    void beanMethodsRegisterAndWireObjects() {
+    @DisplayName("@Import：引入 DAO 配置，通过 @Bean 方法参数注入依赖")
+    void importedConfigurationRegistersAndWiresDao() {
+        // 只加载 AppConfig，DaoConfig 由 @Import 自动引入。
         try (var context = new AnnotationConfigApplicationContext(AppConfig.class)) {
             UserService service = context.getBean("userService", UserService.class);
 
