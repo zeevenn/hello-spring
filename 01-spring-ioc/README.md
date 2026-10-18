@@ -121,3 +121,26 @@ mvn -pl 01-spring-ioc -Dtest=ScopeTest test
 ```
 
 参考 Spring 官方文档：[Bean 作用域](https://docs.spring.io/spring-framework/reference/core/beans/factory-scopes.html)、[ObjectProvider](https://docs.spring.io/spring-framework/docs/7.0.9/javadoc-api/org/springframework/beans/factory/ObjectProvider.html)。
+
+## Bean 生命周期：lesson07.lifecycle
+
+本课继续使用 DAO 对象，通过一个简单的事件列表记录生命周期顺序，不连接真实数据库。
+
+| 示例 | 初始化回调 | 销毁回调 |
+| ---- | ---------- | -------- |
+| `UserDao` | `@PostConstruct` | `@PreDestroy` |
+| `ConfiguredUserDao` | `@Bean(initMethod = "init")` 指定的 `init()` | `@Bean(destroyMethod = "cleanup")` 指定的 `cleanup()` |
+| `InterfaceUserDao` | `InitializingBean.afterPropertiesSet()` | `DisposableBean.destroy()` |
+
+- 本例的单例 Bean 在容器启动时创建：先执行构造器，完成依赖注入后再执行初始化回调。一般优先使用生命周期注解或配置方法，避免业务类依赖 Spring 回调接口。
+- 注解使用 `jakarta.annotation.PostConstruct`、`jakarta.annotation.PreDestroy`。初始化可用于准备数据或检查配置，销毁可用于释放连接等资源。
+- 测试中的 `try (var context = ...)` 会在代码块结束时自动调用 `context.close()`，触发已创建单例 Bean 的销毁回调。销毁回调是清理通知，不代表 Java 对象立即被垃圾回收。
+- 原型 Bean 每次获取时也会初始化，但容器关闭时不会自动调用其销毁回调，使用方需要自行管理资源释放。
+
+`LifecycleTest` 保留四个测试：三种回调方式各一个，以及原型 Bean 的关闭行为。比较关闭容器前后的事件列表，即可看到顺序和调用范围。
+
+```bash
+mvn -pl 01-spring-ioc -Dtest=LifecycleTest test
+```
+
+参考 Spring 官方文档：[生命周期回调](https://docs.spring.io/spring-framework/reference/core/beans/factory-nature.html)、[生命周期注解](https://docs.spring.io/spring-framework/reference/core/beans/annotation-config/postconstruct-and-predestroy-annotations.html)、[原型作用域](https://docs.spring.io/spring-framework/reference/core/beans/factory-scopes.html#beans-factory-scopes-prototype)。
