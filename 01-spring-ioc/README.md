@@ -11,7 +11,6 @@
 | 05   | `lesson05.autowiring`       | 多候选 Bean、`@Primary`、`@Qualifier`、`@Resource` | `AutowiringTest`：歧义与候选选择              |
 | 06   | `lesson06.scope`            | 单例、原型、单例依赖原型                           | `ScopeTest`：实例复用与按需获取               |
 | 07   | `lesson07.lifecycle`        | 初始化、销毁、容器关闭                             | `LifecycleTest`：回调顺序与销毁范围           |
-| 08   | `lesson08.extension`        | Bean 定义与实例的后处理器                          | `ExtensionTest`：定义修改与实例处理           |
 
 ## 目录
 
