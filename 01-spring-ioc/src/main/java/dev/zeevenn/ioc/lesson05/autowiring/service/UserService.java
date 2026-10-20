@@ -1,13 +1,9 @@
 package dev.zeevenn.ioc.lesson05.autowiring.service;
 
-import dev.zeevenn.ioc.lesson01.basic.UserDao;
-
 /**
- * UserService
+ * 用户查询接口，只声明业务能力；依赖注入方式由各实现类自行决定。
  */
 public interface UserService {
-
-    UserDao setUserDao(UserDao userDao);
 
     String findName();
 }

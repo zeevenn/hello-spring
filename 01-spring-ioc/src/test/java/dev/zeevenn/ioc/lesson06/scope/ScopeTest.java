@@ -48,7 +48,7 @@ class ScopeTest {
             ProviderUserService service = context.getBean(ProviderUserService.class);
 
             assertSame(service.getSingletonUserDao(), service.getSingletonUserDao());
-            assertNotSame(service.getUserDao(), service.getUserDao());
+            assertNotSame(service.getPrototypeUserDao(), service.getPrototypeUserDao());
         }
     }
 }

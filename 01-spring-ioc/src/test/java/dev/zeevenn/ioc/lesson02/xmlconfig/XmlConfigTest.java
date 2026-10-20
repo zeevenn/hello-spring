@@ -6,10 +6,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * XmlConfigTest
- */
-public class XmlConfigTest {
+class XmlConfigTest {
 
     @Test
     @DisplayName("构造器引用注入：通过构造器注入 DAO 并查询")

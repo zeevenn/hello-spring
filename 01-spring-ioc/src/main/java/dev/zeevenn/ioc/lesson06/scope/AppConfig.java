@@ -35,8 +35,8 @@ public class AppConfig {
     // 同样调用 provider.getObject()，是否创建新对象取决于目标 Bean 的作用域。
     @Bean
     public ProviderUserService providerUserService(
-            @Qualifier("prototypeUserDao") ObjectProvider<UserDao> userDaoProvider,
+            @Qualifier("prototypeUserDao") ObjectProvider<UserDao> prototypeUserDaoProvider,
             @Qualifier("singletonUserDao") ObjectProvider<UserDao> singletonUserDaoProvider) {
-        return new ProviderUserService(userDaoProvider, singletonUserDaoProvider);
+        return new ProviderUserService(prototypeUserDaoProvider, singletonUserDaoProvider);
     }
 }

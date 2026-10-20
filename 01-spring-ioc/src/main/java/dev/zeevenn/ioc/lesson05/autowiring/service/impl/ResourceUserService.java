@@ -1,6 +1,7 @@
 package dev.zeevenn.ioc.lesson05.autowiring.service.impl;
 
 import dev.zeevenn.ioc.lesson05.autowiring.dao.UserDao;
+import dev.zeevenn.ioc.lesson05.autowiring.service.UserService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
  * 此处用 Setter 演示按名称注入；一般业务的必需依赖仍优先考虑构造器 + @Qualifier。
  */
 @Service
-public class ResourceUserService {
+public class ResourceUserService implements UserService {
 
     private UserDao userDao;
 
@@ -24,6 +25,7 @@ public class ResourceUserService {
         this.userDao = userDao;
     }
 
+    @Override
     public String findName() {
         return this.userDao.findName();
     }

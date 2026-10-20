@@ -1,9 +1,9 @@
 package dev.zeevenn.ioc.lesson05.autowiring.service.impl;
 
+import dev.zeevenn.ioc.lesson05.autowiring.dao.UserDao;
+import dev.zeevenn.ioc.lesson05.autowiring.service.UserService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
-import dev.zeevenn.ioc.lesson05.autowiring.dao.UserDao;
 
 /**
  * {@code @Qualifier} 标在注入点上：先按 UserDao 类型找候选，再按限定值缩小范围。
@@ -11,7 +11,7 @@ import dev.zeevenn.ioc.lesson05.autowiring.dao.UserDao;
  * 限定值也可以匹配 Bean 上声明的 @Qualifier 标签，不局限于 Bean 名。
  */
 @Service
-public class QualifierUserService {
+public class QualifierUserService implements UserService {
 
     private final UserDao userDao;
 
@@ -20,6 +20,7 @@ public class QualifierUserService {
         this.userDao = userDao;
     }
 
+    @Override
     public String findName() {
         return this.userDao.findName();
     }

@@ -1,6 +1,7 @@
 package dev.zeevenn.ioc.lesson05.autowiring.service.impl;
 
 import dev.zeevenn.ioc.lesson05.autowiring.dao.UserDao;
+import dev.zeevenn.ioc.lesson05.autowiring.service.UserService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Service;
  * 此处未指定限定符，两个 UserDao 候选中的 @Primary 决定默认选择。
  */
 @Service
-public class PrimaryUserService {
+public class PrimaryUserService implements UserService {
 
     private final UserDao userDao;
 
@@ -17,6 +18,7 @@ public class PrimaryUserService {
         this.userDao = userDao;
     }
 
+    @Override
     public String findName() {
         return this.userDao.findName();
     }

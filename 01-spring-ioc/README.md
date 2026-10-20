@@ -2,13 +2,13 @@
 
 ## 学习顺序
 
-| 顺序 | 子包                        | 练习内容                                           | 计划测试                                      |
+| 顺序 | 子包                        | 练习内容                                           | 测试入口                                      |
 | ---- | --------------------------- | -------------------------------------------------- | --------------------------------------------- |
 | 01   | `lesson01.basic`            | 手动组装与容器组装、Bean 获取                      | `BasicIocTest`：查询结果、Bean 获取           |
 | 02   | `lesson02.xmlconfig`        | 构造器、Setter、工厂方法、数据库属性配置           | `XmlConfigTest`：注入结果、属性读取与类型转换 |
-| 03   | `lesson03.annotationconfig` | 组件标记、扫描、构造器注入                         | `AnnotationConfigTest`：组件注册、缺失依赖    |
+| 03   | `lesson03.annotationconfig` | 组件扫描、构造器、字段、Setter 注入                | `AnnotationConfigTest`、`AnnotationXmlConfigTest` |
 | 04   | `lesson04.javaconfig`       | `@Bean`、`@Import`、参数注入、`proxyBeanMethods`   | `JavaConfigTest`：配置组合与实例身份比较      |
-| 05   | `lesson05.autowiring`       | 多候选 Bean、`@Primary`、`@Qualifier`、`@Resource` | `AutowiringTest`：歧义与候选选择              |
+| 05   | `lesson05.autowiring`       | 多候选 Bean、`@Primary`、`@Qualifier`、`@Resource` | `AutowiringTest`：候选选择                    |
 | 06   | `lesson06.scope`            | 单例、原型、单例依赖原型                           | `ScopeTest`：实例复用与按需获取               |
 | 07   | `lesson07.lifecycle`        | 初始化、销毁、容器关闭                             | `LifecycleTest`：回调顺序与销毁范围           |
 
@@ -30,6 +30,10 @@ src/
 - 每个练习只扫描自己的主题包。
 - 笔记示例的包名调整时，同步修改 `import`、XML 的 `class` 和扫描范围。
 - XML 使用主题路径，例如 `lesson01/basic/beans.xml`；测试专用配置使用不同文件名。
+- 有明确接口时，`impl` 包中的实现类应显式 `implements` 接口，实现方法标注 `@Override`；业务接口只声明业务能力，依赖组装放在实现类或配置中。
+- `Impl` 是可选的命名习惯。多个实现优先用职责区分，如 `DatabaseUserDao`、`MemoryUserDao`；仅演示对象组装、作用域或生命周期的普通类保持简单，不必额外创建接口。
+- 字段、Setter 注入是特定课程的教学内容；一般业务必需依赖优先使用构造器注入，并将依赖字段声明为 `final`。
+- 导入按标准库、其他包、静态导入分组，组内按包名排序；JUnit 测试类统一使用包级可见性。
 
 ## 运行测试
 
@@ -76,6 +80,8 @@ mvn -pl 01-spring-ioc -Dtest=JavaConfigTest test
 
 `dao.UserDao` 接口有两个实现类，放在 `dao.impl` 下：`DatabaseUserDao`（模拟数据库）和 `MemoryUserDao`（模拟内存），分别注册为 `databaseUserDao`、`memoryUserDao`。Service 依赖接口，由容器选择具体实现，运行时无需外部服务。
 
+`service.UserService` 只声明 `findName()`，三个 `service.impl` 下的实现类都实现该接口。Setter 等依赖注入方法只保留在需要它的实现类中。
+
 | 示例 | 注入规则 | 查询结果 |
 | ---- | -------- | -------- |
 | `PrimaryUserService` | 构造器按类型注入，优先选择标有 `@Primary` 的 `databaseUserDao` | `Ada (database)` |
@@ -104,7 +110,7 @@ mvn -pl 01-spring-ioc -Dtest=AutowiringTest test
 | `prototypeUserDao` | 反复 `getBean` | 不同实例 |
 | `UserService` | 构造器直接接收原型 DAO，反复调用 `getUserDao()` | 同一实例 |
 | `ProviderUserService.getSingletonUserDao()` | 通过 `ObjectProvider.getObject()` 获取单例 DAO | 同一实例 |
-| `ProviderUserService.getUserDao()` | 通过 `ObjectProvider.getObject()` 获取原型 DAO | 不同实例 |
+| `ProviderUserService.getPrototypeUserDao()` | 通过 `ObjectProvider.getObject()` 获取原型 DAO | 不同实例 |
 
 - **单例是默认作用域**，不写 `@Scope` 等同于 `@Scope("singleton")`。复用范围是同一个容器中的同一个 Bean 定义，不表示整个 JVM 中该类只能创建一个对象。
 - **原型用 `@Scope("prototype")` 声明**，每次向容器获取时创建新对象。`@Scope` 可以标在 `@Bean` 方法或组件类上。

@@ -98,5 +98,4 @@ class AnnotationConfigTest {
             assertEquals(UserDao.class, cause.getBeanType());
         }
     }
-
 }

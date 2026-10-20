@@ -8,18 +8,18 @@ import org.springframework.beans.factory.ObjectProvider;
  */
 public class ProviderUserService {
 
-    private final ObjectProvider<UserDao> userDaoProvider;
+    private final ObjectProvider<UserDao> prototypeUserDaoProvider;
     private final ObjectProvider<UserDao> singletonUserDaoProvider;
 
-    public ProviderUserService(ObjectProvider<UserDao> userDaoProvider,
+    public ProviderUserService(ObjectProvider<UserDao> prototypeUserDaoProvider,
             ObjectProvider<UserDao> singletonUserDaoProvider) {
-        this.userDaoProvider = userDaoProvider;
+        this.prototypeUserDaoProvider = prototypeUserDaoProvider;
         this.singletonUserDaoProvider = singletonUserDaoProvider;
     }
 
     // 目标是 prototype，每次获取新对象。
-    public UserDao getUserDao() {
-        return this.userDaoProvider.getObject();
+    public UserDao getPrototypeUserDao() {
+        return this.prototypeUserDaoProvider.getObject();
     }
 
     // 目标是 singleton，即使反复 getObject()，仍获取同一个对象。
