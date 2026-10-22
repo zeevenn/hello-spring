@@ -7,7 +7,7 @@ package dev.zeevenn.aop.lesson01.staticproxy;
 public class UserServiceProxy implements UserService {
 
     // 定义字段，保存被代理的 UserService 对象。
-    private UserService target;
+    private final UserService target;
 
     public UserServiceProxy(UserService target) {
         // 保存构造器传入的真实对象。
@@ -16,6 +16,10 @@ public class UserServiceProxy implements UserService {
 
     @Override
     public String findNameById(int id) {
-        return this.target.findNameById(id);
+        System.out.println("[前置日志] 调用 UserService.findNameById，id=" + id);
+        String name = this.target.findNameById(id);
+
+        System.out.println("[返回日志] UserService.findNameById 返回：" + name);
+        return name;
     }
 }
