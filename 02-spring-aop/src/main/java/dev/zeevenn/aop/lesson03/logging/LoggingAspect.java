@@ -1,4 +1,4 @@
-package dev.zeevenn.aop.lesson02.logging;
+package dev.zeevenn.aop.lesson03.logging;
 
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -16,7 +16,7 @@ public class LoggingAspect {
     // @Before 是前置通知，在匹配的业务方法执行前运行。
     // execution(...) 是切入点表达式，用于指定哪些方法需要执行通知。
     // * 表示任意返回类型，后面是方法的完整名称，() 表示无参数。
-    @Before("execution(* dev.zeevenn.aop.lesson02.logging.UserService.findName())")
+    @Before("execution(* dev.zeevenn.aop.lesson03.logging.UserService.findName())")
     public void logBefore() {
         System.out.println("[前置日志] 调用 UserService.findName()");
     }
@@ -25,7 +25,7 @@ public class LoggingAspect {
     // returning = "result" 将返回值传给下面同名的 result 参数。
     // 此处只读取结果打印日志，不改变业务方法的返回值。
     @AfterReturning(
-            pointcut = "execution(* dev.zeevenn.aop.lesson02.logging.UserService.findName())",
+            pointcut = "execution(* dev.zeevenn.aop.lesson03.logging.UserService.findName())",
             returning = "result")
     public void logAfterReturning(String result) {
         System.out.println("[返回日志] UserService.findName() 返回：" + result);

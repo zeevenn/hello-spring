@@ -1,4 +1,4 @@
-package dev.zeevenn.aop.lesson02.logging;
+package dev.zeevenn.aop.lesson03.logging;
 
 import org.springframework.stereotype.Service;
 
