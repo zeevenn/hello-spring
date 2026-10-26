@@ -68,15 +68,15 @@ Ada10
 
 `lesson03.springaop` 演示：业务类只负责查询，日志统一由切面添加。
 
-| 文件                       | 作用                                                                   |
-| -------------------------- | ---------------------------------------------------------------------- |
-| `service/UserService`      | 按 ID 查询，返回 `"Ada" + id`                                          |
-| `service/OrderService`     | 返回订单数量，演示同一条规则覆盖其他业务类和基本类型返回值             |
-| `pointcut/CommonPointcuts` | 按业务层集中管理公共切入点                                             |
-| `aspect/LoggingAspect`     | 引用公共规则，分别记录方法、参数、返回值、异常及耗时                       |
-| `AppConfig`                | 扫描组件，通过 `@EnableAspectJAutoProxy` 开启 AOP                      |
-| `LoggingApp`               | 可以直接运行的 `main` 入口                                             |
-| `LoggingTest`              | 三个简单测试，验证代理、结果、异常传播和切入点边界 |
+| 文件                       | 作用                                                       |
+| -------------------------- | ---------------------------------------------------------- |
+| `service/UserService`      | 按 ID 查询，返回 `"Ada" + id`                              |
+| `service/OrderService`     | 返回订单数量，演示同一条规则覆盖其他业务类和基本类型返回值 |
+| `pointcut/CommonPointcuts` | 按业务层集中管理公共切入点                                 |
+| `aspect/LoggingAspect`     | 引用公共规则，分别记录方法、参数、返回值、异常及耗时       |
+| `AppConfig`                | 扫描组件，通过 `@EnableAspectJAutoProxy` 开启 AOP          |
+| `LoggingApp`               | 可以直接运行的 `main` 入口                                 |
+| `LoggingTest`              | 三个简单测试，验证代理、结果、异常传播和切入点边界         |
 
 建议先看 `CommonPointcuts`，再看 `LoggingAspect` 和两个业务类，最后运行 `LoggingApp`。
 
@@ -104,7 +104,7 @@ lesson03/springaop/
 | 切面（Aspect）            | 集中实现跨越多个业务类的需求，例如日志或事务；本例为 `LoggingAspect`                 |
 | 连接点（Join point）      | 程序执行中可被增强的位置；Spring AOP 中表示方法执行，本例调用 `findNameById(int id)` |
 | 切入点（Pointcut）        | 匹配连接点的规则；本例为 `CommonPointcuts.serviceMethods()`                          |
-| 通知（Advice）            | 在匹配的连接点上执行的动作；本例由四个通知方法分别记录日志和耗时            |
+| 通知（Advice）            | 在匹配的连接点上执行的动作；本例由四个通知方法分别记录日志和耗时                     |
 | 目标对象（Target object） | 被增强的真实业务对象；本例为执行查询的 `UserService` 对象                            |
 | AOP 代理（AOP proxy）     | 组织通知和业务调用的代理对象；本例容器返回的是 CGLIB 代理                            |
 | 织入（Weaving）           | 将切面与应用对象关联以实现增强的过程；Spring AOP 使用运行时代理完成                  |
