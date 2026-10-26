@@ -1,13 +1,13 @@
-package dev.zeevenn.aop.lesson03.logging;
+package dev.zeevenn.aop.lesson03.springaop;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @Configuration
-// 扫描本课的 UserService 和 LoggingAspect，将它们注册为 Bean。
-@ComponentScan("dev.zeevenn.aop.lesson03.logging")
-// 开启对 @Aspect 的支持，让 Spring 为需要增强的 Bean 创建代理。
+@ComponentScan("dev.zeevenn.aop.lesson03.springaop")
+// 根据切面的匹配规则为 Bean 创建代理，调用时由代理执行通知。
+// 开启基于 @Aspect 注解的 Spring AOP 自动代理支持
 @EnableAspectJAutoProxy
 public class AppConfig {
 }
