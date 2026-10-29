@@ -1,0 +1,3 @@
+-- TODO：创建并选择 hello_spring_tx 数据库。
+-- TODO：创建 account 表，包含 id、name、balance 字段。
+-- id 为主键，balance 使用 DECIMAL 保存金额，表使用 InnoDB 引擎。

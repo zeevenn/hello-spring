@@ -12,6 +12,7 @@
   <modules>
     <module>01-spring-ioc</module>
     <module>02-spring-aop</module>
+    <module>03-spring-tx</module>
   </modules>
 
   <properties>

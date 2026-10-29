@@ -1,0 +1,2 @@
+-- TODO：选择 hello_spring_tx 数据库。
+-- TODO：插入账户 1（Ada）和账户 2（Bob），初始余额均为 1000.00。
